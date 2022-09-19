@@ -9,13 +9,21 @@ public class HushSet {
     public int bucketSize = 10;
     int size = 0;
     static final double COLLISION_CHANCE = 0.3; // load factor = size / bucketSize
+    public int id;
+    ArrayList<HushSet> table;
 
     public HushSet() {
+        this.id = this.hashCode() % bucketSize;
+
         buckets = new ArrayList<LinkedList<Integer>>(bucketSize);
         for (int i = 0; i < bucketSize; i++) {
             buckets.add(i, new LinkedList<Integer>());
         }
         size = 0;
+    }
+
+    public void setTable(ArrayList<HushSet> table) {
+        this.table = table;
     }
 
     public int size() {
@@ -25,7 +33,9 @@ public class HushSet {
     public boolean contains(int element) {
         int hash = getHash(element, bucketSize);
 
-        LinkedList<Integer> curBucket = buckets.get(hash);
+        HushSet chosenNode = findSuccessor(hash);
+
+       LinkedList<Integer> curBucket = chosenNode.buckets.get(hash);
 
         if (curBucket == null) {
             return false;
@@ -35,8 +45,24 @@ public class HushSet {
     }
 
     public boolean insert(int element) {
-        return this.add(element);
+        int hash = getHash(element, bucketSize);
+
+        HushSet chosenNode = findSuccessor(hash);
+
+        return chosenNode.add(element);
     }
+
+    public HushSet findSuccessor(int hash) {
+        HushSet chosenNode = this;
+        for (HushSet node : this.table) {
+            if (hash > id && hash <= node.id) {
+                chosenNode = node;
+                break;
+            }
+        }
+        return chosenNode;
+    }
+
     public boolean add(int element) {
         int hash = getHash(element, bucketSize);
 
@@ -98,26 +124,29 @@ public class HushSet {
         return Integer.toString(element).chars().reduce(0, (ss, c) -> ss * 37 + c) % hashSize;
     }
 
+    public static void main(String[] args) throws NoSuchAlgorithmException {
+        HushSet hs1 = new HushSet();
+        HushSet hs2 = new HushSet();
+        HushSet hs3 = new HushSet();
+        HushSet hs4 = new HushSet();
+        HushSet hs5 = new HushSet();
 
-    public static void main(String[] args) {
-        HushSet hs = new HushSet();
-        hs.insert(11);
-        hs.insert(21);
-        hs.insert(12);
-        // hs.insert(13);
-        // hs.insert(14);
+        ArrayList<HushSet> sets = new ArrayList<>(Arrays.asList(hs1, hs2, hs3, hs4, hs5));
 
-        // System.out.println(hs.getHash(11, 10));
+        hs1.setTable(new ArrayList<>(Arrays.asList(hs2, hs3, hs4, hs5)));
+        hs2.setTable(new ArrayList<>(Arrays.asList(hs1, hs3, hs4, hs5)));
+        hs3.setTable(new ArrayList<>(Arrays.asList(hs1, hs2, hs4, hs5)));
+        hs4.setTable(new ArrayList<>(Arrays.asList(hs1, hs2, hs3, hs5)));
+        hs5.setTable(new ArrayList<>(Arrays.asList(hs1, hs2, hs3, hs4)));
 
-        System.out.println(hs.size());
-        System.out.println(hs.bucketSize);
-        for (LinkedList<Integer> bb : hs.buckets) {
-            System.out.println(bb.toString());
-            // for (Integer it : bb) {
-            //     System.out.print(it + ":" + hs.getHash(it, hs.bucketSize)+ ", ");
-            // }
-            // if (!bb.isEmpty())
-            //     System.out.println();
-        }
+        hs1.insert(16);
+        hs1.insert(21);
+        hs1.insert(12);
+        hs1.insert(129);
+        hs1.insert(1098);
+        hs1.insert(555);
+        hs1.insert(257);
+
+        System.out.println(hs1.contains(257));
     }
 }
