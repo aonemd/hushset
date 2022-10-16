@@ -10,6 +10,8 @@ dependencies {
     implementation("org.apache.commons:commons-text")
     implementation("commons-codec:commons-codec:1.15")
     implementation("com.google.guava:guava:31.1-jre")
+    implementation(project(":node"))
+    implementation(project(":set"))
     implementation(project(":utilities"))
 }
 

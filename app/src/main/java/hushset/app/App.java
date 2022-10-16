@@ -4,33 +4,31 @@
 package hushset.app;
 
 import hushset.list.LinkedList;
+import hushset.set.Set;
+import hushset.node.Node;
 
 import static hushset.utilities.StringUtils.join;
 import static hushset.utilities.StringUtils.split;
-
-import java.math.BigInteger;
-
 import static hushset.app.MessageUtils.getMessage;
 
-import org.apache.commons.codec.digest.*;
-
-import org.apache.commons.text.WordUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class App {
     public static void main(String[] args) {
-        LinkedList tokens;
-        tokens = split(getMessage());
-        String result = join(tokens);
-        System.out.println(WordUtils.capitalize(result));
+        Node n1 = new Node("localhost:3001");
+        Node n2 = new Node("localhost:3002");
+        Node n3 = new Node("localhost:3003");
 
-        String hash = "35454B055CC325EA1AF2126E27707052";
-        String password = "ILoveJava";
-        String md5Hex = DigestUtils
-            .md5Hex(password); //.toUpperCase();
+        ArrayList<Node> nodes = new ArrayList<>(Arrays.asList(n1, n2, n3));
 
-        System.out.println(md5Hex);
-        // System.out.println(Integer.parseInt(md5Hex, 16));
-        System.out.println(new BigInteger(md5Hex, 16));
-
+        for (Node n : nodes) {
+            System.out.println(n.id);
+            // System.out.println("---");
+            // for (LinkedList<Integer> bb : set.buckets) {
+            //     System.out.println(bb.toString());
+            // }
+            System.out.println("--------------------");
+        }
     }
 }
