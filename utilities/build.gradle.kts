@@ -8,4 +8,5 @@ plugins {
 
 dependencies {
     api(project(":list"))
+    implementation("commons-codec:commons-codec:1.15")
 }

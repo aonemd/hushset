@@ -7,10 +7,6 @@ import hushset.list.LinkedList;
 import hushset.set.Set;
 import hushset.node.Node;
 
-import static hushset.utilities.StringUtils.join;
-import static hushset.utilities.StringUtils.split;
-import static hushset.app.MessageUtils.getMessage;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -24,11 +20,14 @@ public class App {
 
         for (Node n : nodes) {
             System.out.println(n.id);
-            // System.out.println("---");
-            // for (LinkedList<Integer> bb : set.buckets) {
-            //     System.out.println(bb.toString());
-            // }
+            n.setTable(nodes);
             System.out.println("--------------------");
         }
+
+        System.out.println(n1.findSuccessor("hello").id);
+        System.out.println(n1.findSuccessor("hel").id);
+        System.out.println(n1.findSuccessor("world").id);
+        System.out.println(n1.findSuccessor("dht").id);
+        System.out.println(n1.findSuccessor("zero").id);
     }
 }

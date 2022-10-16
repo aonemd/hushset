@@ -3,20 +3,28 @@ package hushset.node;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import org.apache.commons.codec.digest.*;
+import static hushset.utilities.HashFuncUtils.DegreeMD5Hex;
 
 public class Node {
     public double id;
     public ArrayList<Node> table;
 
-    public Node(String id) {
+	public Node(String id) {
         this.id = hash(id);
     }
 
-    private Node findSuccessor(double hash) {
+	public void setTable(ArrayList<Node> table) {
+		this.table = table;
+	}
+
+    public Node findSuccessor(String key) {
+        double keyHash = DegreeMD5Hex(key);
+
+        System.out.println(key + " (hash)=> " + keyHash);
+
         Node chosenNode = this;
         for (Node node : this.table) {
-            if (hash > id && hash <= node.id) {
+            if (keyHash > id && keyHash <= node.id) {
                 chosenNode = node;
                 break;
             }
@@ -25,12 +33,6 @@ public class Node {
     }
 
     private double hash(String id) {
-        String md5Hex = DigestUtils
-                .md5Hex(id);
-
-        BigInteger h = new BigInteger(md5Hex, 16);
-        BigInteger modded = BigInteger.valueOf(1000000);
-
-        return h.mod(modded).doubleValue() / modded.doubleValue() * (180 / Math.PI);
+        return DegreeMD5Hex(id);
     }
 }

@@ -7,5 +7,5 @@ plugins {
 }
 
 dependencies {
-  implementation("commons-codec:commons-codec:1.15")
+  implementation(project(":utilities"))
 }
