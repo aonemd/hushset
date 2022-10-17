@@ -10,6 +10,8 @@ import hushset.node.Node;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static hushset.utilities.HashFuncUtils.Sha1Int;
+
 public class App {
     public static void main(String[] args) {
         Node n1 = new Node("localhost:3001");
@@ -23,11 +25,34 @@ public class App {
             n.setTable(nodes);
             System.out.println("--------------------");
         }
+        System.out.println("####################");
 
         System.out.println(n1.findSuccessor("hello").id);
         System.out.println(n1.findSuccessor("hel").id);
         System.out.println(n1.findSuccessor("world").id);
         System.out.println(n1.findSuccessor("dht").id);
         System.out.println(n1.findSuccessor("zero").id);
+        System.out.println(n1.findSuccessor("localhost:3002").id);
+        System.out.println(n1.findSuccessor("hey there duude").id);
+        System.out.println(n1.findSuccessor("abclocalkey12").id);
+        // System.out.println("abclocalkey12 (hash)=> " + Sha1Int("abclocalkey12"));
+
+
+        // Node n4 = new Node("localhost:3004");
+        // n1.join(n4);
+
+
+        // System.out.println("**************");
+        // nodes = new ArrayList<>(Arrays.asList(n1, n2, n3, n4));
+        // for (Node n : nodes) {
+        //     System.out.println(n.id);
+        //     System.out.println("--------------------");
+        // }
+
+        // System.out.println(n1.findSuccessor("hello").id);
+        // System.out.println(n1.findSuccessor("hel").id);
+        // System.out.println(n1.findSuccessor("world").id);
+        // System.out.println(n1.findSuccessor("dht").id);
+        // System.out.println(n1.findSuccessor("zero").id);
     }
 }

@@ -3,10 +3,10 @@ package hushset.node;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
-import static hushset.utilities.HashFuncUtils.DegreeMD5Hex;
+import static hushset.utilities.HashFuncUtils.Sha1Int;
 
 public class Node {
-    public double id;
+    public BigInteger id;
     public ArrayList<Node> table;
 
 	public Node(String id) {
@@ -18,21 +18,36 @@ public class Node {
 	}
 
     public Node findSuccessor(String key) {
-        double keyHash = DegreeMD5Hex(key);
+        BigInteger keyHash = hash(key);
 
-        System.out.println(key + " (hash)=> " + keyHash);
 
         Node chosenNode = this;
         for (Node node : this.table) {
-            if (keyHash > id && keyHash <= node.id) {
+            // System.out.println("n: " + node.id);
+            // keyHash > id && keyHash <= node.id
+            // if (keyHash.compareTo(id) == 1 && keyHash.compareTo(node.id) <= 0) {
+            // TODO: Replace with the proper CHORD routing mechanism ^
+            if (keyHash.compareTo(node.id) <= 0) {
                 chosenNode = node;
                 break;
             }
         }
+        System.out.println(key + " (hash = " + keyHash + ")=> " + chosenNode.id);
+
         return chosenNode;
     }
 
-    private double hash(String id) {
-        return DegreeMD5Hex(id);
+    public void join(Node newNode) {
+        ArrayList<Node> newTable = this.table;
+        newTable.add(newNode);
+        for (Node n : newTable) {
+            n.setTable(newTable);
+        }
+
+        newNode.setTable(this.table);
+    }
+
+    private BigInteger hash(String id) {
+        return Sha1Int(id);
     }
 }

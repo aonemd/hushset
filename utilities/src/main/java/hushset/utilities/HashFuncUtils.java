@@ -4,17 +4,32 @@
 package hushset.utilities;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import org.apache.commons.codec.digest.*;
 
 public class HashFuncUtils {
-    public static double DegreeMD5Hex(String id) {
-        String md5Hex = DigestUtils
-            .md5Hex(id);
+    public static String DegreeMD5Hex(String id) {
+        String md5Hex = DigestUtils.md5Hex(id);
 
         BigInteger h = new BigInteger(md5Hex, 16);
         BigInteger modded = BigInteger.valueOf(1000000);
 
-        return h.mod(modded).doubleValue() / modded.doubleValue() * (180 / Math.PI);
+        double val = h.mod(modded).doubleValue() / modded.doubleValue() * (180 / Math.PI);
+        return Double.toString(val);
+    }
+
+    public static BigInteger Sha1Int(String id) {
+        byte[] sha1Bytes = DigestUtils.sha1(id);
+
+        // little endian
+        byte[] a = Arrays.copyOfRange(sha1Bytes, 0, 8);
+        int length = a.length;
+        byte[] b = new byte[length];
+        for(int i=0; i< a.length ; i++) {
+            b[length - i - 1] = a[i];
+        }
+
+        return new BigInteger(1, b).mod(BigInteger.valueOf(1_000_000_00));
     }
 }
