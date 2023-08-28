@@ -7,10 +7,15 @@ import static hushset.utilities.HashFuncUtils.Sha1Int;
 
 public class Node {
     public BigInteger id;
+    public Node successor;
+    public Node predecessor;
     public ArrayList<Node> table;
 
 	public Node(String id) {
         this.id = hash(id);
+
+        this.successor   = null;
+        this.predecessor = null;
     }
 
 	public void setTable(ArrayList<Node> table) {
@@ -34,17 +39,50 @@ public class Node {
         }
         System.out.println(key + " (hash = " + keyHash + ")=> " + chosenNode.id);
 
-        return chosenNode;
+        return this;
+    }
+
+    public Node findSuccessorNode(BigInteger newId) {
+        if (this.successor == null) {
+            return this;
+        }
+
+        if (newId.compareTo(this.id) == 1 && newId.compareTo(this.successor.id) <= 0 ) {
+            return this.successor;
+        } else {
+            return this.successor.findSuccessorNode(newId);
+        }
     }
 
     public void join(Node newNode) {
-        ArrayList<Node> newTable = this.table;
-        newTable.add(newNode);
-        for (Node n : newTable) {
-            n.setTable(newTable);
-        }
+        Node successorNode = this.findSuccessorNode(newNode.id);
+        newNode.successor = successorNode;
+        successorNode.predecessor = newNode;
 
-        newNode.setTable(this.table);
+        // if (this.successor == null && this.predecessor == null) {
+        //     // it's the genesis node
+        //     this.successor = newNode;
+        //     newNode.predecessor = this;
+        // } else {
+        //     // look for predecessor and successor of newNode
+        //     //
+        //     // newNode.id compare with this.id
+        //     if (newNode.id.compareTo(this.id) > 1) {
+        //
+        //     }
+        // }
+
+        // ArrayList<Node> newTable = this.table;
+        // newTable.add(newNode);
+        // for (Node n : newTable) {
+        //     n.setTable(newTable);
+        // }
+        //
+        // newNode.setTable(this.table);
+    }
+
+    public String toString()  {
+        return this.id.toString();
     }
 
     private BigInteger hash(String id) {

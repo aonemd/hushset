@@ -19,23 +19,28 @@ public class App {
         Node n3 = new Node("localhost:3003");
 
         ArrayList<Node> nodes = new ArrayList<>(Arrays.asList(n1, n2, n3));
-
         for (Node n : nodes) {
             System.out.println(n.id);
-            n.setTable(nodes);
+            // n.setTable(nodes);
             System.out.println("--------------------");
         }
         System.out.println("####################");
 
-        System.out.println(n1.findSuccessor("hello").id);
-        System.out.println(n1.findSuccessor("hel").id);
-        System.out.println(n1.findSuccessor("world").id);
-        System.out.println(n1.findSuccessor("dht").id);
-        System.out.println(n1.findSuccessor("zero").id);
-        System.out.println(n1.findSuccessor("localhost:3002").id);
-        System.out.println(n1.findSuccessor("hey there duude").id);
-        System.out.println(n1.findSuccessor("abclocalkey12").id);
-        // System.out.println("abclocalkey12 (hash)=> " + Sha1Int("abclocalkey12"));
+        System.out.println(n1.findSuccessorNode(n2.id) + " => " + n2.id);
+        n1.join(n2);
+
+        System.out.println(n1.findSuccessorNode(n3.id) + " => " + n3.id);
+
+
+        // System.out.println(n1.findSuccessor("hello").id);
+        // System.out.println(n1.findSuccessor("hel").id);
+        // System.out.println(n1.findSuccessor("world").id);
+        // System.out.println(n1.findSuccessor("dht").id);
+        // System.out.println(n1.findSuccessor("zero").id);
+        // System.out.println(n1.findSuccessor("localhost:3002").id);
+        // System.out.println(n1.findSuccessor("hey there duude").id);
+        // System.out.println(n1.findSuccessor("abclocalkey12").id);
+        // // System.out.println("abclocalkey12 (hash)=> " + Sha1Int("abclocalkey12"));
 
 
         // Node n4 = new Node("localhost:3004");
